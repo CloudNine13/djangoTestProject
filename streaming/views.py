@@ -2,6 +2,7 @@ import mimetypes
 import os
 import re
 from wsgiref.util import FileWrapper
+import cgi
 
 from django.shortcuts import render
 from djangoTestProject import settings
@@ -10,9 +11,13 @@ from djangoTestProject import settings
 from django.http import HttpResponse, StreamingHttpResponse
 
 
-def home(request):
+def helping_page(request):
+    print(f'{request.POST=}')
+    return render(request, 'streaming/registration.html')
 
-    return HttpResponse('Hello, World!')
+
+def helping_page_post(request):
+    print(f'{request.POST=}')
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)

@@ -22,6 +22,6 @@ from streaming import views
 urlpatterns = [
     path('test_stream/', views.test_stream, name='test_stream'),
     path('stream_video/', views.stream_video, name='stream'),
-    path('', views.home, name='home'),
+    path('', views.helping_page, name='help'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
