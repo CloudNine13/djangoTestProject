@@ -63,7 +63,7 @@ def test_stream(request):
 def stream_video(request):
     range_header = request.META.get('HTTP_RANGE', '').strip()
     range_match = range_re.match(range_header)
-    path = os.path.dirname(os.path.abspath(__file__))+"/../SampleVideo_1280x720_30mb.mp4"
+    path = os.path.dirname(os.path.abspath(__file__)) + "/../SampleVideo_1280x720_30mb.mp4"
     size = os.path.getsize(path)
     content_type, encoding = mimetypes.guess_type(path)
     content_type = content_type or 'application/octet-stream'
@@ -74,7 +74,8 @@ def stream_video(request):
         if last_byte >= size:
             last_byte = size - 1
         length = last_byte - first_byte + 1
-        resp = StreamingHttpResponse(RangeFileWrapper(open(path, 'rb'), offset=first_byte, length=length), status=206, content_type=content_type)
+        resp = StreamingHttpResponse(RangeFileWrapper(open(path, 'rb'), offset=first_byte, length=length), status=206,
+                                     content_type=content_type)
         resp['Content-Length'] = str(length)
         resp['Content-Range'] = 'bytes %s-%s/%s' % (first_byte, last_byte, size)
     else:
