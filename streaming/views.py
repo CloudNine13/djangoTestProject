@@ -55,15 +55,15 @@ class RangeFileWrapper(object):
 
 
 def test_stream(request):
-    video_path = "media/SampleVideo_1280x720_30mb.mp4"
-    context = {'video_path': os.path.join(settings.MEDIA_URL, "SampleVideo_1280x720_30mb.mp4")}
+    video_path = "media/video_1.mp4"
+    context = {'video_path': os.path.join(settings.MEDIA_URL, "video_1.mp4")}
     return render(request, template_name='streaming/index.html', context=context)
 
 
 def stream_video(request):
     range_header = request.META.get('HTTP_RANGE', '').strip()
     range_match = range_re.match(range_header)
-    path = os.path.dirname(os.path.abspath(__file__)) + "/../SampleVideo_1280x720_30mb.mp4"
+    path = os.path.dirname(os.path.abspath(__file__)) + "/../video_1.mp4"
     size = os.path.getsize(path)
     content_type, encoding = mimetypes.guess_type(path)
     content_type = content_type or 'application/octet-stream'
