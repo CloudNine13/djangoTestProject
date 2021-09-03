@@ -3,7 +3,7 @@ import os
 import re
 from wsgiref.util import FileWrapper
 
-from models import Video
+from streaming.models import Video
 from django.shortcuts import render
 from djangoTestProject import settings
 
@@ -12,14 +12,9 @@ from django.http import HttpResponse, StreamingHttpResponse
 
 
 def helping_page(request):
-    print(f'{request.POST=}')
-    return render(request, 'streaming/registration.html')
-
-
-def helping_page_post(request):
-    print(f'{request.POST=}')
+    print(f'{request.GET=}')
     videos = Video.objects.all()
-    return render(request, "help.html", {'video': videos})
+    return render(request, "streaming/help.html", {'video': videos})
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)

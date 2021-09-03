@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Video(models.Model):
-    ID = models.CharField(primary_key=True)
+    ID = models.CharField(primary_key=True, max_length=50)
     FileName = models.CharField(max_length=50)
     FileSize = models.CharField(max_length=50)
     FileUrl = models.CharField(max_length=50)
