@@ -2,8 +2,8 @@ import mimetypes
 import os
 import re
 from wsgiref.util import FileWrapper
-import cgi
 
+from models import Video
 from django.shortcuts import render
 from djangoTestProject import settings
 
@@ -18,6 +18,8 @@ def helping_page(request):
 
 def helping_page_post(request):
     print(f'{request.POST=}')
+    videos = Video.objects.all()
+    return render(request, "help.html", {'video': videos})
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)
