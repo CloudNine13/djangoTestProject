@@ -57,13 +57,15 @@ def test_stream(request):
     return render(request, template_name='streaming/index.html', context=context)
 
 
-def stream_video(request):
+def stream_video(request, filename):
+    print("AJAJAJAJAJJAJAJAJAJAJAJAJAJ \n AJAJAJAJAJAJAJAJJAJA \n AJAJAJAJJAJAJAJAJAJAJ", filename)
+    video = Video.objects.get(FileName=filename)
     range_header = request.META.get('HTTP_RANGE', '').strip()
     range_match = range_re.match(range_header)
-    path = os.path.dirname(os.path.abspath(__file__)) + "/../video_1.mp4"
+    path = video.FileUrl
     size = os.path.getsize(path)
     content_type, encoding = mimetypes.guess_type(path)
-    content_type = content_type or 'application/octet-stream'
+    content_type = 'video/mp4'
     if range_match:
         first_byte, last_byte = range_match.groups()
         first_byte = int(first_byte) if first_byte else 0
@@ -72,11 +74,11 @@ def stream_video(request):
             last_byte = size - 1
         length = last_byte - first_byte + 1
         resp = StreamingHttpResponse(RangeFileWrapper(open(path, 'rb'), offset=first_byte, length=length), status=206,
-                                     content_type=content_type)
+                                     content_type='video/mp4')
         resp['Content-Length'] = str(length)
         resp['Content-Range'] = 'bytes %s-%s/%s' % (first_byte, last_byte, size)
     else:
-        resp = StreamingHttpResponse(FileWrapper(open(path, 'rb')), content_type=content_type)
+        resp = StreamingHttpResponse(FileWrapper(open(path, 'rb')), content_type='video/mp4')
         resp['Content-Length'] = str(size)
     resp['Accept-Ranges'] = 'bytes'
     return resp

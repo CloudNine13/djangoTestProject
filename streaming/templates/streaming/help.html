@@ -12,6 +12,7 @@
 <table class="table table-striped">
     <thead>
       <tr>
+        <th>Link</th>
         <th>Video ID</th>
         <th>File name</th>
 		<th>File size</th>
@@ -21,6 +22,7 @@
     <tbody>
 	{% for v in video %}
       <tr>
+        <td><a href="/stream_video/{{v.FileName}}/">Link</a></td>
         <td>{{v.ID}}</td>
         <td>{{v.FileName}}</td>
 		<td>{{v.FileSize}}</td>
