@@ -1,4 +1,3 @@
-import mimetypes
 import os
 import re
 from wsgiref.util import FileWrapper
@@ -8,7 +7,7 @@ from django.shortcuts import render
 from djangoTestProject import settings
 
 # Create your views here.
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import StreamingHttpResponse
 
 
 def helping_page(request):
@@ -21,15 +20,15 @@ range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)
 
 
 class RangeFileWrapper(object):
-    def __init__(self, filelike, blksize=8192, offset=0, length=None):
-        self.filelike = filelike
-        self.filelike.seek(offset, os.SEEK_SET)
+    def __init__(self, file_like, blk_size=8192, offset=0, length=None):
+        self.file_like = file_like
+        self.file_like.seek(offset, os.SEEK_SET)
         self.remaining = length
-        self.blksize = blksize
+        self.blk_size = blk_size
 
     def close(self):
-        if hasattr(self.filelike, 'close'):
-            self.filelike.close()
+        if hasattr(self.file_like, 'close'):
+            self.file_like.close()
 
     def __iter__(self):
         return self
@@ -37,14 +36,14 @@ class RangeFileWrapper(object):
     def __next__(self):
         if self.remaining is None:
             # If remaining is None, we're reading the entire file.
-            data = self.filelike.read(self.blksize)
+            data = self.file_like.read(self.blk_size)
             if data:
                 return data
             raise StopIteration()
         else:
             if self.remaining <= 0:
                 raise StopIteration()
-            data = self.filelike.read(min(self.remaining, self.blksize))
+            data = self.file_like.read(min(self.remaining, self.blk_size))
             if not data:
                 raise StopIteration()
             self.remaining -= len(data)
@@ -52,19 +51,17 @@ class RangeFileWrapper(object):
 
 
 def test_stream(request):
-    video_path = "media/video_1.mp4"
-    context = {'video_path': os.path.join(settings.MEDIA_URL, "video_1.mp4")}
+    video_path = os.path.join(settings.MEDIA_URL, "video_1.mp4")
+    context = {'video_path': video_path}
     return render(request, template_name='streaming/index.html', context=context)
 
 
 def stream_video(request, filename):
-    print("AJAJAJAJAJJAJAJAJAJAJAJAJAJ \n AJAJAJAJAJAJAJAJJAJA \n AJAJAJAJJAJAJAJAJAJAJ", filename)
     video = Video.objects.get(FileName=filename)
     range_header = request.META.get('HTTP_RANGE', '').strip()
     range_match = range_re.match(range_header)
     path = video.FileUrl
     size = os.path.getsize(path)
-    content_type, encoding = mimetypes.guess_type(path)
     content_type = 'video/mp4'
     if range_match:
         first_byte, last_byte = range_match.groups()
