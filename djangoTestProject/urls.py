@@ -23,7 +23,7 @@ from streaming import views
 urlpatterns = [
     path('test_stream/', views.test_stream, name='test_stream'),
     path('stream_video/<str:filename>/', views.stream_video, name='stream'),
-    path('', views.helping_page, name='help'),
+    path('', views.index, name='home'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -10,10 +10,10 @@ from djangoTestProject import settings
 from django.http import StreamingHttpResponse
 
 
-def helping_page(request):
+def index(request):
     print(f'{request.GET=}')
     videos = Video.objects.all()
-    return render(request, "streaming/help.html", {'video': videos})
+    return render(request, "streaming/index.html", {'video': videos})
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)
