@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
 from streaming import views
 
 urlpatterns = [
     path('test_stream/', views.test_stream, name='test_stream'),
     path('stream_video/<str:filename>/', views.stream_video, name='stream'),
-    path('help', views.helping_page, name='help'),
+    path('', views.helping_page, name='help'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

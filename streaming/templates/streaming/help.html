@@ -1,36 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Django CRUD Operations</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="container">
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Link</th>
-        <th>Video ID</th>
-        <th>File name</th>
-		<th>File size</th>
-		<th>File URL</th>
-      </tr>
-    </thead>
-    <tbody>
-	{% for v in video %}
-      <tr>
-        <td><a href="/stream_video/{{v.FileName}}/">Link</a></td>
-        <td>{{v.ID}}</td>
-        <td>{{v.FileName}}</td>
-		<td>{{v.FileSize}}</td>
-		<td>{{v.FileUrl}}</td>
-      </tr>
-	  {% endfor %}
-	</tbody>
-</table>
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+  <div class="container">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Link</th>
+            <th>Video ID</th>
+            <th>File name</th>
+            <th>File size</th>
+            <th>File URL</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for v in video %}
+          <tr>
+            <td><a href="/stream_video/{{v.FileName}}/">Link</a></td>
+            <td>{{v.ID}}</td>
+            <td>{{v.FileName}}</td>
+            <td>{{v.FileSize}}</td>
+            <td>{{v.FileUrl}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+  </div>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}
