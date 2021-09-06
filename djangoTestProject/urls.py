@@ -25,5 +25,6 @@ urlpatterns = [
     path('stream_video/<str:filename>/', views.stream_video, name='stream'),
     path('', views.index, name='home'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/signup/', views.signup, name='signup'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
