@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{% static 'streaming/style.css' %}" media="screen">
+  <meta name="viewport" content="width=device-width, initial-scale=">
+{% endblock %}
+{% block content %}
+    <img src="{% static 'img/UKPIK.jpg' %}" />
+    <p class="center">
+        <a href="{% url 'login' %}" class="fill" >Log in</a>
+        <a href="{% url 'signup' %}" class="fill1">Sign Up</a>
+    </p>
+{% endblock %}

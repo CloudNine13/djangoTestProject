@@ -30,7 +30,8 @@ media
 *.py[cod] 
 *$py.class 
 
-# Distribution / packaging 
+# Distribution / packaging
+streaming/templates/utils
 .Python build/ 
 develop-eggs/ 
 dist/ 

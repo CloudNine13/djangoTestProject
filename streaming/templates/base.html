@@ -1,9 +1,13 @@
 <!-- templates/base.html -->
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
+  <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+  <meta name="description" content="UKPIK server application project" />
   <meta charset="utf-8">
-  {% block head %}{% endblock %}
+  {% block head %}
+  {% endblock %}
 </head>
 <body>
   <main>

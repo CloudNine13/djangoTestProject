@@ -5,18 +5,25 @@ from wsgiref.util import FileWrapper
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-
+from djstripe.models import Product
 from streaming.models import Video
 from django.shortcuts import render, redirect
-from djangoTestProject import settings
-
-# Create your views here.
+from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
 
+login_url = '/accounts/login/'
 
+
+@login_required(login_url=login_url)
 def index(request):
     videos = Video.objects.all()
     return render(request, "streaming/index.html", {'video': videos})
+
+
+@login_required(login_url=login_url)
+def checkout(request):
+    products = Product.objects.all()
+    return render(request, "subscription/checkout.html", {'products': products})
 
 
 def signup(request):
@@ -68,12 +75,7 @@ class RangeFileWrapper(object):
             return data
 
 
-def test_stream(request):
-    video_path = os.path.join(settings.MEDIA_URL, "video_1.mp4")
-    context = {'video_path': video_path}
-    return render(request, template_name='streaming/index.html', context=context)
-
-
+@login_required(login_url=login_url)
 def stream_video(request, filename):
     video = Video.objects.get(FileName=filename)
     range_header = request.META.get('HTTP_RANGE', '').strip()
@@ -97,3 +99,7 @@ def stream_video(request, filename):
         resp['Content-Length'] = str(size)
     resp['Accept-Ranges'] = 'bytes'
     return resp
+
+
+def landing(request):
+    return render(request, template_name='streaming/landing.html')

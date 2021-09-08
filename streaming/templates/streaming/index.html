@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
-  <link rel="stylesheet" type="text/css" href="{% static 'streaming/style.css' %}">
-  <meta name="viewport" content="width=device-width, initial-scale=">
   <title> Home Page </title>
 {% endblock %}
 {% block content %}
-{% if user.is_authenticated %}
   <p>
     <a href="{% url 'logout' %}">Log Out</a>
   </p>
@@ -35,14 +32,6 @@
           {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'checkout' %}"> CHECKOUT </a>
   </div>
-{% else %}
-  <img src="{% static 'img/UKPIK.jpg' %}">
-  <p class="center">
-    <a href="{% url 'login' %}">Log In</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
-  </p>
-
-
-{% endif %}
 {% endblock %}

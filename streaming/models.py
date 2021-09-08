@@ -11,3 +11,16 @@ class Video(models.Model):
 
     class Meta:
         db_table = "videos"
+
+
+class ServiceUser(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    stripeCustomerId = models.CharField(max_length=255)
+    stripeSubscriptionId = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = "users"

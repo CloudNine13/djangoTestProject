@@ -1,29 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
 
-:root {
-  --color-red: #ec1840;
-  --color-purple: #7a18ec;
-  --color-white: #fff;
-  --color-black-1: #111;
-  --color-black-2: #222;
-  --color-black-3: #444;
-  --speed-normal: 0.5s;
-  --speed-fast: 0.8s;
-}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
+/* Page styling -- Not needed to replicate button visuals. */
+html,
 body {
+  margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   min-height: 100vh;
+  font-family: "Roboto Mono", monospace;
+}
+
+a {
+  margin: 50px;
+  color: black;
+  text-decoration: none;
+  font-family: "Roboto Mono", monospace;
 }
 
 img {
@@ -32,22 +25,61 @@ img {
     margin-right: auto;
 }
 
-.center {
-    text-align: center;
-    font-size: 300%;
+.fill {
+  font-size: 20px;
+  font-weight: 200;
+  letter-spacing: 1px;
+  padding: 13px 50px 13px;
+  outline: 0;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
 }
 
-a {
-  position: relative;
-  width: 180px;
-  height: 60px;
-  margin: 20px;
-  line-height: 60px;
-  letter-spacing: 2px;
-  text-decoration: none;
-  text-transform: uppercase;
-  text-align: center;
-  color: black;
-  trasnition: var(--speed-normal);
-  border: 1px solid var(--color-red);
+.fill::after {
+  content: "";
+  background-color: #5dcf40;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
 }
+
+.fill:hover::after {
+  top: 0px;
+  left: 0px;
+}
+
+.fill1 {
+  font-size: 20px;
+  font-weight: 200;
+  letter-spacing: 1px;
+  padding: 13px 50px 13px;
+  outline: 0;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.fill1::after {
+  content: "";
+  background-color: #e61e8c;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+
+.fill1:hover::after {
+  top: 0px;
+  left: 0px;
+}
+

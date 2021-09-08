@@ -14,6 +14,12 @@ from pathlib import Path
 from dotenv import dotenv_values
 from django.conf import settings
 
+# dotenv values
+# SECURITY WARNING: keep the secret key used in production secret!
+STRIPE_TEST_PUBLIC_KEY = dotenv_values(".env")["STRIPE_TEST_PUBLIC_KEY"]
+STRIPE_TEST_SECRET_KEY = dotenv_values(".env")["STRIPE_TEST_SECRET_KEY"]
+SECRET_KEY = dotenv_values(".env")["DJANGO_SECRET_KEY"]
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,8 +34,6 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = dotenv_values(".env")["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,8 +50,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djstripe',
     'streaming',
 ]
+
+STRIPE_LIVE_MODE = False  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+DJSTRIPE_USE_NATIVE_JSONFIELD = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -137,5 +147,5 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect URLs
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home'
 LOGOUT_REDIRECT_URL = '/'

@@ -21,10 +21,12 @@ from django.urls import path, include
 from streaming import views
 
 urlpatterns = [
-    path('test_stream/', views.test_stream, name='test_stream'),
     path('stream_video/<str:filename>/', views.stream_video, name='stream'),
-    path('', views.index, name='home'),
+    path('', views.landing, name='landing'),
+    path('home', views.index, name='index'),
+    path('checkout', views.checkout, name='checkout'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
     path('accounts/signup/', views.signup, name='signup'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
