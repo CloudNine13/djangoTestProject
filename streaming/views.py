@@ -5,11 +5,16 @@ from wsgiref.util import FileWrapper
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.template.defaulttags import csrf_token
+from django.urls import reverse_lazy
+from django.views.generic import FormView
 from djstripe.models import Product
+
+from streaming import forms
 from streaming.models import Video
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponseRedirect
 
 login_url = '/accounts/login/'
 
@@ -26,19 +31,19 @@ def checkout(request):
     return render(request, "subscription/checkout.html", {'products': products})
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1'.encode("UTF-8"))
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect(index)
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
+class Signup(FormView):
+    form_class = forms.SignUpForm
+    template_name = 'registration/signup.html'
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.save()
+        login(self.request, user)
+        if user is not None:
+            return HttpResponseRedirect(self.success_url)
+        return super().form_valid(form)
+
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)

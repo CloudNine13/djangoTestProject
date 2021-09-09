@@ -27,6 +27,6 @@ urlpatterns = [
     path('checkout', views.checkout, name='checkout'),
     path('accounts/', include('django.contrib.auth.urls')),
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
-    path('accounts/signup/', views.signup, name='signup'),
+    path('accounts/signup/', views.Signup.as_view(), name='signup'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

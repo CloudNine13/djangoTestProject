@@ -40,6 +40,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "streaming.ServiceUser"
 
 # Application definition
 
