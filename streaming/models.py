@@ -27,17 +27,19 @@ class ServiceUser(AbstractBaseUser, PermissionsMixin):
             ('S', 'Subscribed'), ('N', 'Unsubscribed')
         ]
     )
-
-    is_superuser = models.BooleanField(_('is_superuser'), default=False)
-    is_active = models.BooleanField(_('is_active'), default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
     stripeCustomerId = models.CharField(_('stripe user id'), max_length=255)
     stripeSubscriptionId = models.CharField(_('stripe subscription id'), max_length=255)
 
     objects = CustomUserManager()
 
-    REQUIRED_FIELDS = ['email', 'password']
+    EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'name'
+    REQUIRED_FIELDS = ['email', 'password']
 
     class Meta:
         db_table = "users"
