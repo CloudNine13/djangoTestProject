@@ -5,14 +5,16 @@ from wsgiref.util import FileWrapper
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.hashers import make_password
 from django.template.defaulttags import csrf_token
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from djstripe.models import Product
 
 from streaming import forms
+from streaming.forms import SignUpForm
 from streaming.models import Video
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse, HttpResponseRedirect
 
@@ -31,19 +33,23 @@ def checkout(request):
     return render(request, "subscription/checkout.html", {'products': products})
 
 
-class Signup(FormView):
-    form_class = forms.SignUpForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('index')
-
-    def form_valid(self, form):
-        user = form.save(commit=False)
-        user.save()
-        login(self.request, user)
-        if user is not None:
-            return HttpResponseRedirect(self.success_url)
-        return super().form_valid(form)
-
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('name')
+            print("JAJAJAJAJAJAJAJJAJAJAJ USERNAME:", username)
+            password = make_password(form.cleaned_data.get('password'))
+            print("JAJAJAJAJAJAJAJJAJAJAJ RAW PASSWORD:", password)
+            email = form.cleaned_data.get('email')
+            print("JAJAJAJAJAJAJAJJAJAJAJ EMAIL:", email)
+            user = authenticate(username=username, password=password, email=email)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/signup.html', {'form': form})
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)
