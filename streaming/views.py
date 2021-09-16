@@ -1,22 +1,16 @@
-import base64
 import os
 import re
 from wsgiref.util import FileWrapper
 
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-from django.template.defaulttags import csrf_token
-from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.http import StreamingHttpResponse
+from django.shortcuts import render, redirect
 from djstripe.models import Product
 
-from streaming import forms
 from streaming.forms import SignUpForm
 from streaming.models import Video
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.http import StreamingHttpResponse, HttpResponseRedirect
 
 login_url = '/accounts/login/'
 
@@ -39,12 +33,9 @@ def signup(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('name')
-            print("JAJAJAJAJAJAJAJJAJAJAJ USERNAME:", username)
             password = make_password(form.cleaned_data.get('password'))
-            print("JAJAJAJAJAJAJAJJAJAJAJ RAW PASSWORD:", password)
             email = form.cleaned_data.get('email')
-            print("JAJAJAJAJAJAJAJJAJAJAJ EMAIL:", email)
-            user = authenticate(username=username, password=password, email=email)
+            user = authenticate(username=username, password=password, email=email, subscription='Unsubscribed')
             login(request, user)
             return redirect('index')
     else:

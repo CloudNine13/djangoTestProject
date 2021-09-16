@@ -13,7 +13,7 @@ body{
     width: 100%;
 }
 
-.sign-up-card{
+.sign-card{
     background-color: #222;
     color: #fff;
     width: 350px;
@@ -22,7 +22,7 @@ body{
     margin-bottom: 30px;
 }
 
-.sign-up-card h3{
+.sign-card h3{
     font-size: 24px;
     font-weight: 500;
     margin-bottom: 30px;

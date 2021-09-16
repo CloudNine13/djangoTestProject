@@ -1,14 +1,40 @@
-<!-- templates/registration/login.html -->
 {% extends 'base.html' %}
-
+{% load static %}
 {% block head %}
-<title>Login</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/sign_template.css' %}">
+<title>Signup</title>
 {% endblock %}
 {% block content %}
-<h2>Log In</h2>
 <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
+  <div class="sign-card">
+    <h3>Signup</h3>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="input-div">
+      {{ form.name.errors }}
+      <label for="{{ form.name.id_for_label }}">Username:</label>
+      {{ form.name }}
+    </div>
+    <div class="input-div">
+      {{ form.email.errors }}
+      <label for="{{ form.email.id_for_label }}">Email:</label>
+      {{ form.email }}
+    </div>
+    <div class="input-div">
+      {{ form.password.errors }}
+      <label for="{{ form.password.id_for_label }}">Password:</label>
+      {{ form.password }}
+    </div>
+    <div class="input-div">
+      <label for="{{ form.password.id_for_label }}">Confirm Password:</label>
+      {{ form.confirm_password }}
+    </div>
+    <div class="c-error">
+      {{ form.confirm_password.error }}
+    </div>
+
+    <button type="submit" class="btn">Sign up</button>
+    <p>Already have account? <a href="{% url 'login' %}">Log In</a></p>
+  </div>
 </form>
 {% endblock %}
