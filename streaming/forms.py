@@ -1,11 +1,55 @@
 from django import forms
-from django.contrib.auth import get_user_model
+from streaming.models import ServiceUser
 from django.contrib.auth.forms import UserCreationForm
 
 
 class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=60, help_text='Lo necesitamos para regitrarte la cuenta')
-    confirm_password = forms.PasswordInput()
+    username = forms.CharField(
+        label="name",
+        max_length=30,
+        help_text='Lo necesitamos para saber como llamarte',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': 'Username',
+            }
+        ),
+    )
+
+    email = forms.EmailField(
+        label="email",
+        max_length=60,
+        help_text='Lo necesitamos para regitrarte la cuenta',
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'placeholder': 'Email',
+            }
+        ),
+    )
+
+    password = forms.CharField(
+        label="password",
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                'type': 'password',
+                'placeholder': 'Password',
+            }
+        ),
+    )
+
+    confirm_password = forms.CharField(
+        label="password",
+        widget=forms.PasswordInput(
+            attrs={
+                'type': 'password',
+                'placeholder': 'Confirm Password',
+            }
+        ),
+    )
 
     def clean(self):
         cleaned_data = super(SignUpForm, self).clean()
@@ -16,8 +60,8 @@ class SignUpForm(UserCreationForm):
         return cleaned_data
 
     class Meta:
-        model = get_user_model()
-        fields = ('username', 'email',)
+        model = ServiceUser
+        fields = ('username', 'email', 'password', 'confirm_password')
 
 
 class LoginForm(forms.ModelForm):
