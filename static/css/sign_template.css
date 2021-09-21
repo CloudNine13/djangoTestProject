@@ -8,7 +8,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #000;
+    background-color: black !important;
     min-height: 100vh;
     width: 100%;
 }
@@ -52,11 +52,12 @@ body{
     border: 2px solid #2827CC;
 }
 
-.btn{
+.btn-custom{
     width: 100%;
     height: 40px;
     line-height: 40px;
     text-align: center;
+    vertical-align: middle;
     background: linear-gradient(45deg, #1B98F5, #23C4ED);
     font-size: 18px;
     border-radius: 5px;
@@ -64,7 +65,7 @@ body{
     transition: 0.4s ease;
 }
 
-.btn:hover{
+.btn-custom:hover{
     background: linear-gradient(45deg, #383CC1, #23C4ED);
     cursor: pointer;
 }
@@ -74,34 +75,4 @@ p a{
     font-weight: 600;
     color: #fff;
     font-size: 18px;
-}
-
-.c-error .c-validation{
-  background: #c51244 !important;
-  padding: 10px !important;
-  border-radius: 0 !important;
-  position: relative;
-  display: inline-block !important;
-  box-shadow: 1px 1px 1px #aaaaaa;
-  margin-top: 10px;
-}
-.c-error  .c-validation:before{
-  content: '';
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #c51244;
-  position: absolute;
-  top: -10px;
-}
-.c-label:after{
-  color: #c51244 !important;
-}
-.c-error input, .c-error select, .c-error .c-choice-option{
-  background: #fff0f4;
-  color: #c51244;
-}
-.c-error input, .c-error select{
-  border: 1px solid #c51244 !important;
 }

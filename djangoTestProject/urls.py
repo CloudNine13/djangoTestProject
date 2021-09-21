@@ -28,5 +28,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
     path('accounts/signup/', views.signup, name='signup'),
+    path('accounts/login/', views.custom_login, name='login'),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

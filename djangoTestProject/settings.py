@@ -39,8 +39,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = "streaming.ServiceUser"
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,6 +50,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djstripe',
     'streaming',
+]
+
+AUTH_USER_MODEL = "streaming.ServiceUser"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 STRIPE_LIVE_MODE = False  # Change to True in production

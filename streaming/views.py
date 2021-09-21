@@ -9,7 +9,7 @@ from django.http import StreamingHttpResponse
 from django.shortcuts import render, redirect
 from djstripe.models import Product
 
-from streaming.forms import SignUpForm
+from streaming.forms import SignUpForm, LoginForm
 from streaming.models import Video
 
 login_url = '/accounts/login/'
@@ -28,8 +28,28 @@ def checkout(request):
 
 
 def signup(request):
+    context = {}
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = make_password(form.cleaned_data.get('password'))
+            user = authenticate(username=username, email=email, password=password, subscription='N')
+            login(request, user)
+            return redirect('index')
+        else:
+            context['registration_form'] = form
+    else:  # GET request
+        form = SignUpForm()
+        context['form'] = form
+    return render(request, 'registration/signup.html', context)
+
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('name')
@@ -39,8 +59,8 @@ def signup(request):
             login(request, user)
             return redirect('index')
     else:
-        form = SignUpForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        form = LoginForm()
+    return render(request, 'registration/login.html', {'form': form})
 
 
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)

@@ -1,27 +1,11 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 
-class SignUpForm(forms.ModelForm):
-    name = forms.CharField(label="name", required=True, widget=forms.TextInput(attrs={
-        'type': 'text',
-        'placeholder': 'Username',
-    }))
-
-    email = forms.CharField(label="email", required=True, widget=forms.TextInput(attrs={
-        'type': 'text',
-        'placeholder': 'Email',
-    }))
-
-    password = forms.CharField(label="password", widget=forms.PasswordInput(attrs={
-        'type': 'password',
-        'placeholder': 'Password',
-    }), required=True)
-
-    confirm_password = forms.CharField(label="password", widget=forms.PasswordInput(attrs={
-        'type': 'password',
-        'placeholder': 'Confirm Password',
-    }), required=True)
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=60, help_text='Lo necesitamos para regitrarte la cuenta')
+    confirm_password = forms.PasswordInput()
 
     def clean(self):
         cleaned_data = super(SignUpForm, self).clean()
@@ -33,7 +17,7 @@ class SignUpForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('name', 'email', 'password')
+        fields = ('username', 'email',)
 
 
 class LoginForm(forms.ModelForm):
