@@ -14,6 +14,8 @@
   <div class="sign-card">
     <h3>Signup</h3>
     {% csrf_token %}
+    {{ form.errors }}
+    {{ form.non_field_errors }}
     <div class="input-div">
       <label for="{{ form.username.id_for_label }}">Username:</label>
       {{ form.username }}
@@ -24,11 +26,11 @@
     </div>
     <div class="input-div">
       <label for="{{ form.password.id_for_label }}">Password:</label>
-      {{ form.password }}
+      {{ form.password1 }}
     </div>
     <div class="input-div">
       <label for="{{ form.password.id_for_label }}">Confirm Password:</label>
-      {{ form.confirm_password }}
+      {{ form.password2 }}
     </div>
     {% if form.errors %}
        {% for field in form %}

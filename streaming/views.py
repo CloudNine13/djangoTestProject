@@ -32,16 +32,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            print("THE POST IS VALID")
-            form.save()
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            password = make_password(form.cleaned_data.get('password'))
-            user = authenticate(username=username, email=email, password=password, subscription='N')
-            print("USER:", user)
-            print("USERNAME:", username)
-            print("EMAIL:", email)
-            print("PASSWORD:", password)
+            user = form.save()
             login(request, user)
             return redirect('index')
         else:
@@ -63,7 +54,7 @@ def custom_login(request):
             user = authenticate(username=username, password=password, email=email, subscription='Unsubscribed')
             login(request, user)
             return redirect('index')
-    else:
+    else:  # GET request
         form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})
 

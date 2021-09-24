@@ -1,6 +1,8 @@
+import uuid
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 
 from streaming.managers import CustomUserManager
@@ -17,7 +19,12 @@ class Video(models.Model):
         db_table = "videos"
 
 
-class ServiceUser(AbstractBaseUser):
+class ServiceUser(AbstractBaseUser, PermissionsMixin):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(verbose_name='username', max_length=30, unique=True)
     password = models.CharField(verbose_name='password', max_length=120)
@@ -32,7 +39,8 @@ class ServiceUser(AbstractBaseUser):
         max_length=1,
         choices=[
             ('S', 'Subscribed'), ('N', 'Unsubscribed')
-        ]
+        ],
+        default='N'
     )
 
     stripeCustomerId = models.CharField(_('stripe user id'), max_length=255)
@@ -42,7 +50,7 @@ class ServiceUser(AbstractBaseUser):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'password']
+    REQUIRED_FIELDS = ['email',]
 
     class Meta:
         db_table = "users"
