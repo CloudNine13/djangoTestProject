@@ -1,9 +1,14 @@
 from django import forms
 from streaming.models import ServiceUser
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 
 class SignUpForm(UserCreationForm):
+    error_messages = {
+        'password_mismatch': _('Las contraseñas no coinciden. Por favor, introdúzcalas otra vez')
+    }
+
     username = forms.CharField(
         label="username",
         max_length=30,
@@ -43,6 +48,7 @@ class SignUpForm(UserCreationForm):
 
     password2 = forms.CharField(
         label="password2",
+        required=True,
         widget=forms.PasswordInput(
             attrs={
                 'type': 'password',
@@ -50,22 +56,6 @@ class SignUpForm(UserCreationForm):
             }
         ),
     )
-
-
-    def clean(self):
-        print("ENTERED IN CLEAN")
-        cleaned_data = super(SignUpForm, self).clean()
-        print("CLEANED DATA", cleaned_data)
-        password = cleaned_data["password1"]
-        print("CLEANED PASSWORD", password)
-        confirm_password = cleaned_data["password2"]
-        print("CLEANED CONFIRM PASSWORD", confirm_password)
-        if password != confirm_password:
-            self.add_error('confirm_password', "Password and confirm password do not match")
-            print("ERROR OCCURED")
-        print("RETURNING CLEANED DATA", cleaned_data)
-        # breakpoint()
-        return cleaned_data
 
     class Meta:
         model = ServiceUser

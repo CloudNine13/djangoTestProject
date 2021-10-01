@@ -14,8 +14,6 @@
   <div class="sign-card">
     <h3>Signup</h3>
     {% csrf_token %}
-    {{ form.errors }}
-    {{ form.non_field_errors }}
     <div class="input-div">
       <label for="{{ form.username.id_for_label }}">Username:</label>
       {{ form.username }}

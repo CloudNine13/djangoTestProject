@@ -31,8 +31,9 @@ def signup(request):
     context = {}
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        print("request", request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             login(request, user)
             return redirect('index')
         else:
